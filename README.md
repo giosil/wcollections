@@ -14,6 +14,11 @@ String sValue = wmap.getString(key, "");
 Date dtValue = wmap.getDate(key, null);
 ```
 
+## Build
+
+- `git clone https://github.com/giosil/wcollections.git`
+- `mvn clean install`
+
 ## Contributors
 
 * [Giorgio Silvestris](https://github.com/giosil)
