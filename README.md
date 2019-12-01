@@ -1,6 +1,6 @@
 # Wrapped Collections
 
-A simple convenience library for manage collections.
+A convenience library for manage collections.
 
 ## Examples
 
