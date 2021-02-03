@@ -1,5 +1,7 @@
 # Wrapped Collections
 
+![Build](https://github.com/giosil/wcollections/workflows/Build/badge.svg)
+
 A convenience library for manage collections.
 
 ## Examples
