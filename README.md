@@ -1,7 +1,7 @@
 # Wrapped Collections
 
 ![Build](https://github.com/giosil/wcollections/workflows/Build/badge.svg)
-![Release](https://img.shields.io/github/v/tag/giosil/wcollections)
+![Release](https://img.shields.io/github/v/tag/giosil/wcollections.svg)
 
 A convenience library for manage collections.
 
