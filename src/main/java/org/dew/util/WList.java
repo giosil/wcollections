@@ -15,6 +15,7 @@ package org.dew.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -485,6 +486,15 @@ class WList implements List
   public java.sql.Date getSQLDate(int index, Object oDefault) {
     if(list.size() <= index) return WUtil.toSQLDate(oDefault, null);
     return WUtil.toSQLDate(get(index), oDefault);
+  }
+  
+  public java.sql.Date getSQLDate(int index, Object oDefault, Object oTime) {
+    if(list.size() <= index) {
+      java.sql.Date result = WUtil.toSQLDate(oDefault, null);
+      return WUtil.setTime(result, oTime);
+    }
+    java.sql.Date result = WUtil.toSQLDate(get(index), oDefault);
+    return WUtil.setTime(result, oTime);
   }
   
   public java.sql.Time getSQLTime(int index) {
