@@ -22,6 +22,10 @@ Date dtValue = wmap.getDate(key, null);
 - `git clone https://github.com/giosil/wcollections.git`
 - `mvn clean install`
 
+## Build on Jenkins
+
+![Jenkins](jenkins.png)
+
 ## Contributors
 
 * [Giorgio Silvestris](https://github.com/giosil)
