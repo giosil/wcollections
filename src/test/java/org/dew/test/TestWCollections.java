@@ -1,5 +1,7 @@
 package org.dew.test;
 
+import java.util.Calendar;
+
 import org.dew.util.WUtil;
 
 import junit.framework.Test;
@@ -19,7 +21,14 @@ public class TestWCollections extends TestCase {
   public void testApp() {
     String sValue = "3,14";
     double dValue = WUtil.toDouble(sValue, 0.0d);
+    System.out.println("WUtil.toDouble(" + sValue + ", 0.0d) -> " + dValue);
     assertTrue(dValue == 3.14d);
+    
+    sValue = "1974-11-19";
+    Calendar calValue = WUtil.toCalendar(sValue, null);
+    System.out.println("WUtil.toCalendar(" + sValue + ", 0.0d) -> " + WUtil.formatDateTime(calValue, "-", true));
+    assertNotNull(calValue);
+    assertTrue(calValue.get(Calendar.DATE) == 19);
   }
   
 }
