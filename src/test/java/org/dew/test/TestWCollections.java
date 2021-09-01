@@ -26,9 +26,14 @@ public class TestWCollections extends TestCase {
     
     sValue = "1974-11-19";
     Calendar calValue = WUtil.toCalendar(sValue, null);
-    System.out.println("WUtil.toCalendar(" + sValue + ", 0.0d) -> " + WUtil.formatDateTime(calValue, "-", true));
+    System.out.println("WUtil.toCalendar(" + sValue + ", null) -> " + WUtil.formatDateTime(calValue, "-", true));
     assertNotNull(calValue);
     assertTrue(calValue.get(Calendar.DATE) == 19);
-  }
+    
+    sValue = " 00123 ";
+    int iValue = WUtil.toInt(sValue, 0);
+    System.out.println("WUtil.toInt(" + sValue + ", 0) -> " + iValue);
+    assertTrue(iValue == 123);
+   }
   
 }
