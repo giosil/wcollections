@@ -8,9 +8,7 @@ pipeline {
                
                // bat "mvn clean package"
                // sh "mvn clean package"
-               withMaven {
-                   sh "/opt/apache-maven-3.9.5/bin/mvn clean package"
-               }
+               sh "/opt/apache-maven-3.9.5/bin/mvn clean package"
            }
            
            post {
