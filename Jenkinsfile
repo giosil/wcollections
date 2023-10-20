@@ -6,7 +6,9 @@ pipeline {
            steps {
                git 'https://github.com/giosil/wcollections.git'
                
-               mvn package
+               withMaven {
+                   sh "mvn clean package"
+               }
            }
            
            post {
