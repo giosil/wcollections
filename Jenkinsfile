@@ -3,11 +3,10 @@ pipeline {
     
     environment {
         OS = script {
-            def os = System.getProperty("os.name").toLowerCase()
-            if (os.contains("win")) {
-                return 'windows'
-            } else {
+            if (isUnix()) {
                 return 'linux'
+            } else {
+                return 'windows'
             }
         }
     }
