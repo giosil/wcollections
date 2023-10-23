@@ -1,28 +1,16 @@
 pipeline {
     agent any
     
-    environment {
-        OS = script {
-            if (isUnix()) {
-                return 'linux'
-            } else {
-                return 'windows'
-            }
-        }
-    }
-    
     stages {
         stage('Build') {
            steps {
                git 'https://github.com/giosil/wcollections.git'
                
                script {
-                  echo "OS = ${env.OS}"
-                  
-                  if (env.OS == 'windows') {
-                      bat "mvn clean package"
-                  } else {
+                  if (isUnix()) {
                       sh "mvn clean package"
+                  } else {
+                      bat "mvn clean package"
                   }
                }
            }
