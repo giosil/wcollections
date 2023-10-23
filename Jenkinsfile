@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Build') {
            steps {
-               git 'https://github.com/giosil/wcollections.git'
+               // git 'https://github.com/giosil/wcollections.git'
+               
+               checkout scm
                
                script {
                   if (isUnix()) {
