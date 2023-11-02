@@ -2160,8 +2160,7 @@ class WUtil
     String className = klass.getName();
     if(className .startsWith("java.")) return bean;
     
-    List params = new ArrayList(1);
-    params.add(null);
+    Object[] params = new Object[1];
     
     // If klass is a System class then set includeSuperClass to false.
     boolean includeSuperClass = klass.getClassLoader() != null;
@@ -2200,7 +2199,7 @@ class WUtil
               method.invoke(bean, parameters);
             }
             else {
-              params.set(0, mapValues.get(key));
+              params[0] = mapValues.get(key);
               Object[] parameters = RefUtil.getParametersExt(method, params);
               if(parameters == null) continue;
               method.invoke(bean, parameters);
