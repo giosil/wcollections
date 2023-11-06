@@ -2160,7 +2160,8 @@ class WUtil
     String className = klass.getName();
     if(className .startsWith("java.")) return bean;
     
-    Object[] params = new Object[1];
+    List params = new ArrayList(1);
+    params.add(null);
     
     // If klass is a System class then set includeSuperClass to false.
     boolean includeSuperClass = klass.getClassLoader() != null;
@@ -2179,8 +2180,7 @@ class WUtil
             if(key.length() == 1) {
               key = key.toLowerCase();
             } 
-            else
-            if(!Character.isUpperCase(key.charAt(1))) {
+            else if(!Character.isUpperCase(key.charAt(1))) {
               key = key.substring(0, 1).toLowerCase() + key.substring(1);
             }
             String genericParameterType  = null;
@@ -2199,7 +2199,7 @@ class WUtil
               method.invoke(bean, parameters);
             }
             else {
-              params[0] = mapValues.get(key);
+              params.set(0, mapValues.get(key));
               Object[] parameters = RefUtil.getParametersExt(method, params);
               if(parameters == null) continue;
               method.invoke(bean, parameters);
@@ -2231,18 +2231,15 @@ class WUtil
         if(item == null) {
           listResult.add(null);
         }
-        else
-        if(item instanceof Map) {
+        else if(item instanceof Map) {
           listResult.add(populateBean(beanClass, (Map) item, classLoader));
         }
-        else
-        if(beanClass.isAssignableFrom(item.getClass())) {
+        else if(beanClass.isAssignableFrom(item.getClass())) {
           listResult.add((T) item);
         }
       }
     }
-    else
-    if(object.getClass().isArray()) {
+    else if(object.getClass().isArray()) {
       int length = Array.getLength(object);
       listResult = new ArrayList<T>(length);
       for(int i = 0; i < length; i++) {
@@ -2250,18 +2247,15 @@ class WUtil
         if(item == null) {
           listResult.add(null);
         }
-        else
-        if(item instanceof Map) {
+        else if(item instanceof Map) {
           listResult.add(populateBean(beanClass, (Map) item, classLoader));
         }
-        else
-        if(beanClass.isAssignableFrom(item.getClass())) {
+        else if(beanClass.isAssignableFrom(item.getClass())) {
           listResult.add((T) item);
         }
       }
     }
-    else
-    if(object instanceof Map) {
+    else if(object instanceof Map) {
       listResult = new ArrayList<T>(1);
       listResult.add(populateBean(beanClass, (Map) object, classLoader));
     }
@@ -2380,20 +2374,17 @@ class WUtil
       if(iterator.hasNext()) return iterator.next();
       return null;
     }
-    else
-    if(object.getClass().isArray()) {
+    else if(object.getClass().isArray()) {
       int length = Array.getLength(object);
       if(length == 0) return null;
       return Array.get(object, 0);
     }
-    else
-    if(object instanceof Map) {
+    else if(object instanceof Map) {
       Iterator iterator = ((Map) object).values().iterator();
       if(iterator.hasNext()) return iterator.next();
       return null;
     }
-    else
-    if(object instanceof Map.Entry) {
+    else if(object instanceof Map.Entry) {
       return ((Map.Entry) object).getValue();
     }
     return object;
@@ -2408,28 +2399,24 @@ class WUtil
       if(list.size() == 0) return null;
       return list.get(list.size()-1);
     }
-    else
-    if(object.getClass().isArray()) {
+    else if(object.getClass().isArray()) {
       int length = Array.getLength(object);
       if(length == 0) return null;
       return Array.get(object, length-1);
     }
-    else
-    if(object instanceof Collection) {
+    else if(object instanceof Collection) {
       Iterator iterator = ((Collection) object).iterator();
       Object oLast = null;
       while(iterator.hasNext()) oLast = iterator.next();
       return oLast;
     }
-    else
-    if(object instanceof Map) {
+    else if(object instanceof Map) {
       Iterator iterator = ((Map) object).values().iterator();
       Object oLast = null;
       while(iterator.hasNext()) oLast = iterator.next();
       return oLast;
     }
-    else
-    if(object instanceof Map.Entry) {
+    else if(object instanceof Map.Entry) {
       return ((Map.Entry) object).getKey();
     }
     return object;
@@ -2442,16 +2429,13 @@ class WUtil
     if(object instanceof Collection) {
       return ((Collection) object).size();
     }
-    else
-    if(object.getClass().isArray()) {
+    else if(object.getClass().isArray()) {
       return Array.getLength(object);
     }
-    else
-    if(object instanceof Map) {
+    else if(object instanceof Map) {
       return ((Map) object).size();
     }
-    else
-    if(object instanceof Map.Entry) {
+    else if(object instanceof Map.Entry) {
       return 2;
     }
     return 1;
@@ -2469,16 +2453,14 @@ class WUtil
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object.getClass().isArray()) {
+    else if(object.getClass().isArray()) {
       int length = Array.getLength(object);
       if(index >= length) return null;
       Object oResult = Array.get(object, index);
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object instanceof Collection) {
+    else if(object instanceof Collection) {
       Object oResult = null;
       int currIndex = -1;
       Iterator iterator = ((Collection) object).iterator();
@@ -2492,8 +2474,7 @@ class WUtil
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object instanceof Map) {
+    else if(object instanceof Map) {
       Object oResult = null;
       int currIndex = -1;
       Iterator iterator = ((Map) object).values().iterator();
@@ -2507,8 +2488,7 @@ class WUtil
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object instanceof Map.Entry) {
+    else if(object instanceof Map.Entry) {
       if(index == 0) return ((Map.Entry) object).getValue();
       if(index == 1) return ((Map.Entry) object).getKey();
       return null;
@@ -2534,8 +2514,7 @@ class WUtil
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object instanceof Collection) {
+    else if(object instanceof Collection) {
       Object oResult = null;
       Collection collection = (Collection) object;
       Iterator iterator = collection.iterator();
@@ -2543,16 +2522,14 @@ class WUtil
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object.getClass().isArray()) {
+    else if(object.getClass().isArray()) {
       int length = Array.getLength(object);
       if(length == 0) return null;
       Object oResult = Array.get(object, 0);
       if(oResult instanceof Map.Entry) return ((Map.Entry) oResult).getValue();
       return oResult;
     }
-    else
-    if(object instanceof Map.Entry) {
+    else if(object instanceof Map.Entry) {
       return ((Map.Entry) object).getValue();
     }
     return object;
@@ -2614,28 +2591,23 @@ class WUtil
     if(iYear < 10) {
       sYear = "000" + sYear;
     }
-    else
-    if(iYear < 100) {
+    else if(iYear < 100) {
       sYear = "00" + sYear;
     }
-    else
-    if(iYear < 1000) {
+    else if(iYear < 1000) {
       sYear = "0" + sYear;
     }
     if(c0 == '#') {
       return sYear + sMonth + sDay;
     }
-    else
-    if(c0 == '-' || c0 == 'j' || c0 == 'J') { // JAPAN
+    else if(c0 == '-' || c0 == 'j' || c0 == 'J') { // JAPAN
       return sYear + "-" + sMonth + "-" + sDay;
     }
-    else
-    if(c0 == 'e' || c0 == 'E' || c0 == 'u' || c0 == 'U' || c0 == '1') {
+    else if(c0 == 'e' || c0 == 'E' || c0 == 'u' || c0 == 'U' || c0 == '1') {
       if(cL == 'K') return sDay + "/" + sMonth + "/" + sYear; // UK
       return sMonth + "/" + sDay + "/" + sYear;
     }
-    else
-    if(c0 == '.' || c0 == 'g' || c0 == 'G') { // GERMAN
+    else if(c0 == '.' || c0 == 'g' || c0 == 'G') { // GERMAN
       return sDay + "." + sMonth + "." + sYear;
     }
     if(cL == '-') {
@@ -2697,12 +2669,10 @@ class WUtil
     if(c0 == 'x' || c0 == 'X') {
       return toISO8601Timestamp(cal);
     }
-    else
-    if(c0 == 'Z') {
+    else if(c0 == 'Z') {
       return toISO8601Timestamp_Z(cal);
     }
-    else
-    if(c0 == '*') {
+    else if(c0 == '*') {
       return toISO8601Timestamp_Offset(cal, ":");
     }
     
@@ -2721,12 +2691,10 @@ class WUtil
     if(iYear < 10) {
       sYear = "000" + sYear;
     }
-    else
-    if(iYear < 100) {
+    else if(iYear < 100) {
       sYear = "00" + sYear;
     }
-    else
-    if(iYear < 1000) {
+    else if(iYear < 1000) {
       sYear = "0" + sYear;
     }
     if(c0 == '!') {
@@ -2738,19 +2706,16 @@ class WUtil
       if(iMill < 10) {
         sMill = "00" + sMill;
       }
-      else
-      if(iMill < 100) {
+      else if(iMill < 100) {
         sMill = "0" + sMill;
       }
       return sYear + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMin + ":" + sSec + "." + sMill;
     }
-    else
-    if(c0 == '#') {
+    else if(c0 == '#') {
       if(!second) return sYear + sMonth + sDay + sHour + sMin;
       return sYear + sMonth + sDay + sHour + sMin + sSec;
     }
-    else
-    if(c0 == '+') {
+    else if(c0 == '+') {
       int iZoneOffset  = cal.get(Calendar.ZONE_OFFSET);
       int iDST_Offset  = cal.get(Calendar.DST_OFFSET);
       int iTot_Offset  = iZoneOffset + iDST_Offset;
@@ -2766,18 +2731,15 @@ class WUtil
       if(!second) return sYear + sMonth + sDay + sHour + sMin + sOSSign + sOSHH + sOSMM;
       return sYear + sMonth + sDay + sHour + sMin + sSec + sOSSign + sOSHH + sOSMM;
     }
-    else
-    if(c0 == '-' || c0 == 'j' || c0 == 'J') { // JAPAN
+    else if(c0 == '-' || c0 == 'j' || c0 == 'J') { // JAPAN
       if(!second) return sYear + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMin;
       return sYear + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMin + ":" + sSec;
     }
-    else
-    if(c0 == '.' || c0 == 'g' || c0 == 'G') { // GERMAN
+    else if(c0 == '.' || c0 == 'g' || c0 == 'G') { // GERMAN
       if(!second) return sDay + "." + sMonth + "." + sYear + " " + sHour + ":" + sMin;
       return sDay + "." + sMonth + "." + sYear + " " + sHour + ":" + sMin + ":" + sSec;
     }
-    else
-    if(c0 == 'e' || c0 == 'E' || c0 == 'u' || c0 == 'U' || c0 == '1') {
+    else if(c0 == 'e' || c0 == 'E' || c0 == 'u' || c0 == 'U' || c0 == '1') {
       if(cL == 'K') { // UK
         if(!second) return sDay + "/" + sMonth + "/" + sYear + " " + sHour + ":" + sMin;
         return sDay + "/" + sMonth + "/" + sYear + " " + sHour + ":" + sMin + ":" + sSec;
@@ -2807,8 +2769,7 @@ class WUtil
       if(dfEN  == null) dfEN  = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Locale.US));
       return left + dfEN.format(dValue.doubleValue()) + right;
     }
-    else
-    if(c0 == 'i' || c0 == 'I' || c0 == '0') {
+    else if(c0 == 'i' || c0 == 'I' || c0 == '0') {
       if(dfIT  == null) dfIT  = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(Locale.ITALY));
       return left + dfIT.format(dValue.doubleValue()) + right;
     }

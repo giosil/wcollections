@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Stack;
@@ -26,12 +27,15 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+/**
+ * Reflection utilities.
+ */
 @SuppressWarnings({"rawtypes","unchecked"})
 public
 class RefUtil
 {
   public static
-  Object invoke(Object handler, String methodName, Object[] params)
+  Object invoke(Object handler, String methodName, List<?> params)
     throws Throwable
   {
     Object[] parameters  = null;
@@ -56,7 +60,7 @@ class RefUtil
         parameters = getParametersExt(lastMethodSameName, params);
       }
       if(parameters == null) {
-       throw new Exception("method " + WUtil.toHTMLText(methodName, "") + "(" + getStringParams(params) + ") not found");
+       throw new Exception("method " + msgText(methodName) + "(" + getStringParams(params) + ") not found");
       }
       method = lastMethodSameName;
     }
@@ -70,6 +74,13 @@ class RefUtil
     catch (InvocationTargetException itex) {
       throw itex.getTargetException();
     }
+  }
+  
+  public static
+  String msgText(String text)
+  {
+    if(text == null) return "null";
+    return text.replace("<", "&lt;").replace(">", "&gt;");
   }
   
   // Restituisce il tipo con generici SOLO in presenza di bean.
@@ -110,15 +121,15 @@ class RefUtil
   }
   
   public static
-  Object[] getParameters(Method method, Object[] params)
+  Object[] getParameters(Method method, List<?> params)
   {
-    int paramsLength = params != null ? params.length : 0;
+    int paramsSize = params != null ? params.size() : 0;
     Class[] types = method.getParameterTypes();
-    if(types.length != paramsLength) return null;
+    if(types.length != paramsSize) return null;
     Object[] aoResult = new Object[types.length];
     for(int i = 0; i < types.length; i++) {
       String sTypeName = types[i].getName();
-      Object param     = params[i];
+      Object param     = params.get(i);
       
       if(sTypeName.equals("java.lang.String")) {
         if(param == null) {
@@ -765,15 +776,15 @@ class RefUtil
   }
   
   public static
-  Object[] getParametersExt(Method method, Object[] params)
+  Object[] getParametersExt(Method method, List<?> params)
   {
-    int paramsLength = params != null ? params.length : 0;
+    int paramsSize = params != null ? params.size() : 0;
     Class[] types = method.getParameterTypes();
-    if(types.length != paramsLength) return null;
+    if(types.length != paramsSize) return null;
     Object[] aoResult = new Object[types.length];
     for(int i = 0; i < types.length; i++) {
       String sTypeName = types[i].getName();
-      Object param     = params[i];
+      Object param     = params.get(i);
       
       if(sTypeName.equals("java.lang.String")) {
         if(param == null || param.equals("null")) {
@@ -1206,6 +1217,7 @@ class RefUtil
   public static
   String getStackTrace(Throwable t)
   {
+    if(t == null) return "";
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintWriter pw = new PrintWriter(baos);
     t.printStackTrace(pw);
@@ -1216,7 +1228,7 @@ class RefUtil
   public static
   String getMethodAndRow(byte[] aBytes, int iDepth)
   {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     int iCountCRLF = 0;
     boolean boTraceOn = false;
     for(int i = 0; i < aBytes.length; i++) {
@@ -1236,12 +1248,29 @@ class RefUtil
           sb.append(':');
           continue;
         }
-        else
-        if(b == ')') break;
+        else if(b == ')') break;
         if(boTraceOn) sb.append((char) b);
       }
     }
     return sb.toString();
+  }
+  
+  public static
+  String getStringParams(List<?> params)
+  {
+    if(params == null || params.size() == 0) return "";
+    String sResult = "";
+    for(int i = 0; i < params.size(); i++) {
+      Object oValue = params.get(i);
+      if(oValue == null) {
+        sResult += ",null";
+      }
+      else {
+        sResult += "," + oValue.getClass().getName();
+      }
+    }
+    if(sResult.length() > 0) sResult = sResult.substring(1);
+    return sResult;
   }
   
   public static
@@ -1262,4 +1291,3 @@ class RefUtil
     return sResult;
   }
 }
-
