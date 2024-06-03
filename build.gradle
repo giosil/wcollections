@@ -4,7 +4,6 @@
 
 plugins {
     id 'java-library'
-    id 'maven-publish'
 }
 
 repositories {
@@ -26,14 +25,6 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
@@ -41,3 +32,23 @@ tasks.withType(JavaCompile) {
 tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
 }
+
+task checkDest {
+    doFirst {
+        def destDir = new File("${buildDir}/../target")
+        if (!destDir.exists()) {
+            destDir.mkdirs()
+        }
+    }
+}
+
+build {
+    dependsOn checkDest
+}
+
+task copyLibs(type: Copy) {
+    from("${buildDir}/libs")
+    into("${buildDir}/../target")
+}
+
+build.finalizedBy(copyLibs)
